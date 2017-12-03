@@ -5,7 +5,7 @@
  */
 package View;
 
-import Controller.CRUD;
+import Helper.CRUD;
 import Model.Administrasi;
 import Model.Member;
 import Model.Pengepul;
@@ -212,9 +212,6 @@ public class Dahboard extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -235,8 +232,13 @@ public class Dahboard extends javax.swing.JFrame {
                             .addComponent(indAdmin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(26, 26, 26))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addComponent(jLabel4)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -277,8 +279,8 @@ public class Dahboard extends javax.swing.JFrame {
                     .addComponent(indAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(36, 36, 36))
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         btnNew.setText("New...");
@@ -418,7 +420,11 @@ public class Dahboard extends javax.swing.JFrame {
                 pj.setAlwaysOnTop(true);
                 pj.setVisible(true);
                 break;
-                
+            case BELI:
+                PembelianForm pb = new PembelianForm();
+                pb.setAlwaysOnTop(true);
+                pb.setVisible(true);
+                break;
                 
             default:
         }

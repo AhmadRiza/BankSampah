@@ -5,7 +5,7 @@
  */
 package View;
 
-import Controller.CRUD;
+import Helper.CRUD;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;

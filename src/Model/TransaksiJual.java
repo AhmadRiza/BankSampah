@@ -13,9 +13,10 @@ public final class TransaksiJual extends Transaksi {
     private int idPengepul;
     private String nota;
 
-    public TransaksiJual(int idPengepul, int id, int idJenis, int beratTotal, double total, String tanggal) {
+    public TransaksiJual(int idPengepul, String nota, int id, int idJenis, int beratTotal, double total, String tanggal) {
         super(id, idJenis, beratTotal, total, tanggal);
         this.idPengepul = idPengepul;
+        this.nota = nota;
     }
 
     public String getNota() {

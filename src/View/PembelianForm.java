@@ -6,6 +6,7 @@
 package View;
 
 import Helper.CRUD;
+import Model.TransaksiBeli;
 import Model.TransaksiJual;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,17 +16,17 @@ import javax.swing.JOptionPane;
  *
  * @author riza
  */
-public class PenjualanForm extends javax.swing.JFrame {
+public class PembelianForm extends javax.swing.JFrame {
 
     /**
      * Creates new form NewUser
      */
-    int idSampah, idPengepul, beratTotal;
+    int idSampah, idMember, beratTotal;
     
     int status;
     CRUD db;
 
-    public PenjualanForm() {
+    public PembelianForm() {
         if (!Main.restriced) {
             JOptionPane.showMessageDialog(null, "Please run from main class");
             System.exit(0);
@@ -37,20 +38,15 @@ public class PenjualanForm extends javax.swing.JFrame {
     }
     
     private void setNota(TransaksiJual tj){
-        
-        
-        System.out.println("=========================");   
-        System.out.println("\t\tNOTA");   
-        System.out.println("=========================");   
-        
+       
         
     }
     
     
     
     private String formValidation() {
-        if (comboPengepul.getSelectedIndex()<1) {
-            return "Pilih Pengepul!";
+        if (comboMember.getSelectedIndex()<1) {
+            return "Pilih Member!";
         }
         if (comboSampah.getSelectedIndex()<1) {
             return "Pilih jenis sampah!";
@@ -61,8 +57,8 @@ public class PenjualanForm extends javax.swing.JFrame {
         }
         beratTotal = Integer.parseInt(txtBerat.getText());
         
-        String[] pengepul = comboPengepul.getSelectedItem().toString().split("-");
-        idPengepul=Integer.parseInt(pengepul[0].trim());
+        String[] pengepul = comboMember.getSelectedItem().toString().split("-");
+        idMember=Integer.parseInt(pengepul[0].trim());
         String[] sampah = comboSampah.getSelectedItem().toString().split("-");
         idSampah=Integer.parseInt(sampah[0].trim());
         
@@ -71,8 +67,8 @@ public class PenjualanForm extends javax.swing.JFrame {
 
     private void setUpCombo() {
 
-        String col = "id_pengepul, nama";
-        String table = "pengepul";
+        String col = "id_member, nama";
+        String table = "member";
 
         try {
             ResultSet res1 = null;
@@ -86,7 +82,7 @@ public class PenjualanForm extends javax.swing.JFrame {
 
             while (res1.next()) {
                 String item = res1.getString(1) + " - " + res1.getString(2);
-                comboPengepul.addItem(item);
+                comboMember.addItem(item);
             }
             
         } catch (SQLException ex) {
@@ -121,12 +117,10 @@ public class PenjualanForm extends javax.swing.JFrame {
             db.closeConnection();
         }
         
-        
-
     }
 
     private void reset() {
-        comboPengepul.setSelectedIndex(0);
+        comboMember.setSelectedIndex(0);
         comboSampah.setSelectedIndex(0);
     }
 
@@ -145,7 +139,7 @@ public class PenjualanForm extends javax.swing.JFrame {
         btnOK = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        comboPengepul = new javax.swing.JComboBox<>();
+        comboMember = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         comboSampah = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -162,12 +156,12 @@ public class PenjualanForm extends javax.swing.JFrame {
 
         labelForm.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
         labelForm.setForeground(new java.awt.Color(255, 255, 255));
-        labelForm.setText("Penjualan");
+        labelForm.setText("Pembelian");
 
         btnOK.setBackground(new java.awt.Color(255, 255, 255));
         btnOK.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
         btnOK.setForeground(new java.awt.Color(0, 96, 100));
-        btnOK.setText("Insert");
+        btnOK.setText("Konfirmasi");
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOKActionPerformed(evt);
@@ -210,9 +204,9 @@ public class PenjualanForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(62, 62, 62));
-        jLabel1.setText("Pengepul");
+        jLabel1.setText("Member");
 
-        comboPengepul.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--" }));
+        comboMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--" }));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(62, 62, 62));
@@ -241,7 +235,7 @@ public class PenjualanForm extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
-                    .addComponent(comboPengepul, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboMember, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2)
                     .addComponent(comboSampah, 0, 226, Short.MAX_VALUE)
                     .addComponent(jLabel4)
@@ -263,7 +257,7 @@ public class PenjualanForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboPengepul, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboMember, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -285,15 +279,15 @@ public class PenjualanForm extends javax.swing.JFrame {
 
         String validMsg = formValidation();
         if (validMsg == null) {
-            TransaksiJual tj = new TransaksiJual(idPengepul,null, -1, idSampah, beratTotal, -1, null);
+            TransaksiBeli tj = new TransaksiBeli(idMember, null, -1, idSampah, beratTotal, -1, null);
             if (!db.insert(tj)) {
                 JOptionPane.showMessageDialog(null, db.getMessage());
             }
             db.closeConnection();
-            Main.newForm.showTableTJual(null);//update Table
+            Main.newForm.showTableTbeli(null);//update Table
             reset();
             JOptionPane.showMessageDialog(null, "Transaksi Berhasil!");
-            setNota(tj);
+            
         } else {
             JOptionPane.showMessageDialog(null, validMsg);
         }
@@ -318,28 +312,30 @@ public class PenjualanForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PenjualanForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PembelianForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PenjualanForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PembelianForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PenjualanForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PembelianForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PenjualanForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PembelianForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PenjualanForm().setVisible(true);
+                new PembelianForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOK;
-    private javax.swing.JComboBox<String> comboPengepul;
+    private javax.swing.JComboBox<String> comboMember;
     private javax.swing.JComboBox<String> comboSampah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

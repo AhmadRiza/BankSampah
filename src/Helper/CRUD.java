@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Helper;
 
 import Model.Administrasi;
 import Model.QueryAbstract;
@@ -163,8 +163,6 @@ public class CRUD extends MySQLAccess {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally{
-            System.out.println("Connection Closed!");
         }
         
     }
@@ -305,7 +303,7 @@ public class CRUD extends MySQLAccess {
                 double total = result.getDouble(6);
                 String tanggal = result.getString(7);
 
-                list.add(new TransaksiJual(idPengepul, id, idJenis, beratTotal, total, tanggal));
+                list.add(new TransaksiJual(idPengepul, nota, id, idJenis, beratTotal, total, tanggal));
             }
         } catch (Exception ex) {
             message = "INCOMPATIBLE TYPE! " + ex;

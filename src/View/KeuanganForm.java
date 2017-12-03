@@ -5,7 +5,7 @@
  */
 package View;
 
-import Controller.CRUD;
+import Helper.CRUD;
 import Model.Administrasi;
 import javax.swing.JOptionPane;
 

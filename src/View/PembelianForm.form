@@ -29,7 +29,7 @@
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <Component id="comboPengepul" max="32767" attributes="0"/>
+                  <Component id="comboMember" max="32767" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="comboSampah" alignment="0" pref="226" max="32767" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
@@ -55,7 +55,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="comboPengepul" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="comboMember" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -131,7 +131,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Penjualan"/>
+            <Property name="text" type="java.lang.String" value="Pembelian"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
@@ -147,7 +147,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="64" green="60" red="0" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Insert"/>
+            <Property name="text" type="java.lang.String" value="Konfirmasi"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOKActionPerformed"/>
@@ -171,10 +171,10 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="3e" green="3e" red="3e" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Pengepul"/>
+        <Property name="text" type="java.lang.String" value="Member"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="comboPengepul">
+    <Component class="javax.swing.JComboBox" name="comboMember">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
