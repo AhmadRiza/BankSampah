@@ -25,6 +25,7 @@ public class Dahboard extends javax.swing.JFrame {
     /**
      * Creates new form NewForm
      */
+
     private final int MEMBER = 11, SAMPAH = 12, PENGEPUL = 13, JUAL = 14, BELI = 15, TARIK_TUNAI = 16, KEUANGAN = 17;
 
     CRUD db;
@@ -82,7 +83,7 @@ public class Dahboard extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         mTable = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        txtCari = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         labelTable = new javax.swing.JLabel();
 
@@ -100,8 +101,15 @@ public class Dahboard extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/exit.png"))); // NOI18N
         jLabel4.setText("Log Out");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         labelJual.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
         labelJual.setForeground(new java.awt.Color(255, 255, 255));
@@ -205,13 +213,21 @@ public class Dahboard extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -231,15 +247,6 @@ public class Dahboard extends javax.swing.JFrame {
                             .addComponent(indTarik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(indAdmin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(26, 26, 26))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jLabel4)))
-                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,6 +290,8 @@ public class Dahboard extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
         );
 
+        jPanel5.setToolTipText("");
+
         btnNew.setText("New...");
         btnNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,7 +332,14 @@ public class Dahboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        mTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(mTable);
+
+        txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCariKeyReleased(evt);
+            }
+        });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/magnifier-tool.png"))); // NOI18N
 
@@ -348,7 +364,7 @@ public class Dahboard extends javax.swing.JFrame {
                         .addGap(70, 70, 70)
                         .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                         .addGap(79, 79, 79)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
@@ -364,7 +380,7 @@ public class Dahboard extends javax.swing.JFrame {
                         .addComponent(btnNew)
                         .addComponent(btnEdit)
                         .addComponent(btnDelete)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelTable)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1)
@@ -425,7 +441,7 @@ public class Dahboard extends javax.swing.JFrame {
                 pb.setAlwaysOnTop(true);
                 pb.setVisible(true);
                 break;
-                
+
             default:
         }
     }//GEN-LAST:event_btnNewActionPerformed
@@ -498,43 +514,41 @@ public class Dahboard extends javax.swing.JFrame {
                 newMember.setAlwaysOnTop(true);
                 newMember.setVisible(true);
                 break;
-                
+
             case SAMPAH:
 //                "ID", "Jenis", "Harga Jual", "HargaBeli", "Stok(Kg)"
-                  int idSampah = Integer.parseInt(mTable.getValueAt(row, 0).toString());
-                  String jenis = mTable.getValueAt(row,1).toString();
-                  double hJual = parseCurr(mTable.getValueAt(row, 2).toString());
-                  double hBeli = parseCurr(mTable.getValueAt(row, 3).toString());
-                  int stok = Integer.parseInt(mTable.getValueAt(row, 0).toString());
-                  SampahForm sampahForm1 = new SampahForm(new Sampah(idSampah, jenis, hJual, hBeli, stok));
-                  sampahForm1.setAlwaysOnTop(true);
-                  sampahForm1.setVisible(true);
+                int idSampah = Integer.parseInt(mTable.getValueAt(row, 0).toString());
+                String jenis = mTable.getValueAt(row, 1).toString();
+                double hJual = parseCurr(mTable.getValueAt(row, 2).toString());
+                double hBeli = parseCurr(mTable.getValueAt(row, 3).toString());
+                int stok = Integer.parseInt(mTable.getValueAt(row, 0).toString());
+                SampahForm sampahForm1 = new SampahForm(new Sampah(idSampah, jenis, hJual, hBeli, stok));
+                sampahForm1.setAlwaysOnTop(true);
+                sampahForm1.setVisible(true);
                 break;
             case PENGEPUL:
 //                "ID", "Nama", "Alamat", "Jadwal", "No. Telp"
-                  Pengepul p = new Pengepul(
-                          Integer.parseInt(mTable.getValueAt(row, 0).toString()), 
-                          mTable.getValueAt(row, 1).toString(), 
-                          mTable.getValueAt(row, 2).toString(), 
-                          mTable.getValueAt(row, 3).toString(), 
-                          mTable.getValueAt(row, 4).toString()
-                  );
-                  PengepulForm pengepulForm = new PengepulForm(p);
-                  pengepulForm.setAlwaysOnTop(true);
-                  pengepulForm.setVisible(true);
+                Pengepul p = new Pengepul(
+                        Integer.parseInt(mTable.getValueAt(row, 0).toString()),
+                        mTable.getValueAt(row, 1).toString(),
+                        mTable.getValueAt(row, 2).toString(),
+                        mTable.getValueAt(row, 3).toString(),
+                        mTable.getValueAt(row, 4).toString()
+                );
+                PengepulForm pengepulForm = new PengepulForm(p);
+                pengepulForm.setAlwaysOnTop(true);
+                pengepulForm.setVisible(true);
                 break;
-                
-                
+
             default:
-                
-                
+
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         int row = mTable.getSelectedRow();
-        if (row == -1 || row>mTable.getRowCount()-1) {
+        if (row == -1 || row > mTable.getRowCount() - 1) {
             return;
         }
         int selId = Integer.parseInt(mTable.getValueAt(row, 0).toString());
@@ -579,10 +593,48 @@ public class Dahboard extends javax.swing.JFrame {
                 default:
             }
         } catch (Exception e) {
-            
+
         }
 
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "Apakah anda yakin ingin keluar ?", "Warning", 2)
+                == JOptionPane.YES_OPTION) {
+            Main.loginForm = new LogIn();
+            Main.loginForm.setVisible(true);
+            dispose();
+        }
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void txtCariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyReleased
+        // TODO add your handling code here:
+        String cari = txtCari.getText();
+        
+        switch (statusUI) {
+            case MEMBER:
+                showTableMember("nama LIKE '%"+cari+"%' OR id_member LIKE '%"+cari+"%' ");
+                break;
+                
+            case PENGEPUL:
+                showTablePengepul("nama LIKE '%"+cari+"%' OR id_pengepul LIKE '%"+cari+"%' ");
+                break;
+                
+            case SAMPAH:
+                showTableSampah("jenis LIKE '%"+cari+"%' OR id_jenis LIKE '%"+cari+"%' ");
+                break;
+                
+            case KEUANGAN:
+                showTableSampah("id_adm LIKE '%"+cari+"%' ");
+                break;
+                
+                
+            default:
+                
+        }
+        
+    }//GEN-LAST:event_txtCariKeyReleased
 
     /**
      * @param args the command line arguments
@@ -611,7 +663,7 @@ public class Dahboard extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -640,7 +692,6 @@ public class Dahboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelAdmin;
     private javax.swing.JLabel labelBeli;
     private javax.swing.JLabel labelGudang;
@@ -650,6 +701,7 @@ public class Dahboard extends javax.swing.JFrame {
     private javax.swing.JLabel labelTable;
     private javax.swing.JLabel labelTunai;
     private javax.swing.JTable mTable;
+    private javax.swing.JTextField txtCari;
     // End of variables declaration//GEN-END:variables
 
     private void throwMessage() {
@@ -894,7 +946,7 @@ public class Dahboard extends javax.swing.JFrame {
     public boolean showTableTJual(String where) {
 //        SELECT `id_tjual`, `id_pengepul`, `id_jenis`, `berat_total`, `total`, `tanggal` FROM `transaksi_jual` WHERE 
 
-        String[] field = {"ID","Nota", "ID Pengepul", "ID Jenis", "Berat", "Total", "Tanggal"};
+        String[] field = {"ID", "Nota", "ID Pengepul", "ID Jenis", "Berat", "Total", "Tanggal"};
         DefaultTableModel model = new DefaultTableModel(null, field);
         model.setRowCount(0);
         mTable.setModel(model);

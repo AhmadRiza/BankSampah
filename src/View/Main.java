@@ -38,7 +38,6 @@ public class Main {
     }
     
     
-    
     private static boolean debugMode = true;//kasih login/ ndak
     public static void main(String[] args) {
         restriced = true;
