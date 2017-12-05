@@ -86,7 +86,7 @@ public class CRUD extends MySQLAccess {
 
         return true;
     }
-
+//
     public boolean insert(QueryAbstract object) {
         openConection();
 

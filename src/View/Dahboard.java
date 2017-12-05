@@ -10,8 +10,10 @@ import Model.Administrasi;
 import Model.Member;
 import Model.Pengepul;
 import Model.Sampah;
-import Model.TransaksiBeli;
-import Model.TransaksiJual;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +27,6 @@ public class Dahboard extends javax.swing.JFrame {
     /**
      * Creates new form NewForm
      */
-
     private final int MEMBER = 11, SAMPAH = 12, PENGEPUL = 13, JUAL = 14, BELI = 15, TARIK_TUNAI = 16, KEUANGAN = 17;
 
     CRUD db;
@@ -46,6 +47,7 @@ public class Dahboard extends javax.swing.JFrame {
             dispose();
             new LogIn().setVisible(true);
         }
+        initExitMethod();
 
     }
 
@@ -87,7 +89,8 @@ public class Dahboard extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         labelTable = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Bank Sampah");
         setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(0, 96, 100));
@@ -189,6 +192,11 @@ public class Dahboard extends javax.swing.JFrame {
         labelTunai.setText("   Tarik Tunai");
         labelTunai.setToolTipText("");
         labelTunai.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelTunai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelTunaiMouseClicked(evt);
+            }
+        });
 
         indTarik.setBackground(new java.awt.Color(255, 255, 255));
         indTarik.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/arrow.png"))); // NOI18N
@@ -442,6 +450,12 @@ public class Dahboard extends javax.swing.JFrame {
                 pb.setVisible(true);
                 break;
 
+            case TARIK_TUNAI:
+                TarikTunai tt = new TarikTunai();
+                tt.setAlwaysOnTop(true);
+                tt.setVisible(true);
+                break;
+
             default:
         }
     }//GEN-LAST:event_btnNewActionPerformed
@@ -611,30 +625,39 @@ public class Dahboard extends javax.swing.JFrame {
     private void txtCariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyReleased
         // TODO add your handling code here:
         String cari = txtCari.getText();
-        
+
         switch (statusUI) {
             case MEMBER:
-                showTableMember("nama LIKE '%"+cari+"%' OR id_member LIKE '%"+cari+"%' ");
+                showTableMember("nama LIKE '%" + cari + "%' OR id_member LIKE '%" + cari + "%' ");
+
+                System.out.println(db.getQuery());
                 break;
-                
+
             case PENGEPUL:
-                showTablePengepul("nama LIKE '%"+cari+"%' OR id_pengepul LIKE '%"+cari+"%' ");
+                showTablePengepul("nama LIKE '%" + cari + "%' OR id_pengepul LIKE '%" + cari + "%' ");
                 break;
-                
+
             case SAMPAH:
-                showTableSampah("jenis LIKE '%"+cari+"%' OR id_jenis LIKE '%"+cari+"%' ");
+                showTableSampah("jenis LIKE '%" + cari + "%' OR id_jenis LIKE '%" + cari + "%' ");
                 break;
-                
+
             case KEUANGAN:
-                showTableSampah("id_adm LIKE '%"+cari+"%' ");
+                showTableSampah("id_adm LIKE '%" + cari + "%' ");
                 break;
-                
-                
+
             default:
-                
+
         }
-        
+
     }//GEN-LAST:event_txtCariKeyReleased
+
+    private void labelTunaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelTunaiMouseClicked
+        // TODO add your handling code here:
+        setUIState(TARIK_TUNAI);
+        if (!showTableTarikTunai(null)) {
+            throwMessage();
+        }
+    }//GEN-LAST:event_labelTunaiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -908,35 +931,40 @@ public class Dahboard extends javax.swing.JFrame {
         return true;
     }
 
+   
     public boolean showTableTbeli(String where) {
 //         SELECT `id_tbeli`, `id_jenis`, `berat_total`, `nomor_nota`, `id_member`, `total`, `tanggal`
 
-        String[] field = {"ID", "ID Jenis", "Berat", "Total", "No. Nota", "ID Member", "Tanggal"};
+        String[] field = {"ID", "Jenis", "Berat", "Total", "No. Nota", "Nama Member", "Tanggal"};
         DefaultTableModel model = new DefaultTableModel(null, field);
         model.setRowCount(0);
         mTable.setModel(model);
+        String col = "id_tbeli, jenis, berat_total, total, nomor_nota, nama, tanggal";
+        String tbl = " transaksi_beli tb ,sampah s,member m";
+        String wherebase = "tb.id_jenis=s.id_jenis and tb.id_member = m.id_member";
 
-        if (!db.get(null, "transaksi_beli", where, -1)) {
+        if (!db.get(col, tbl, wherebase, -1)) {
             msg = db.getMessage();
             return false;
         }
+        ResultSet result = db.getResult();
+        try {
+            while (result.next()) {
+                Object[] row = {
+                    result.getString(1),
+                    result.getString(2),
+                    result.getString(3),
+                    formatCurr(Double.parseDouble(result.getString(4))),
+                    result.getString(5),
+                    result.getString(6),
+                    result.getString(7)
+                };
 
-        ArrayList<TransaksiBeli> list = db.parseTbeli();
-        TransaksiBeli cItem;
-
-        for (int i = 0; i < list.size(); i++) {
-            cItem = list.get(i);
-            Object[] row = {
-                cItem.getId(),
-                cItem.getIdJenis(),
-                cItem.getBeratTotal(),
-                formatCurr(cItem.getTotal()),
-                cItem.getNoNota(),
-                cItem.getIdMember(),
-                cItem.getTanggal()
-            };
-
-            model.addRow(row);
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            msg = ex.getMessage();
+            return false;
         }
 
         db.closeConnection();
@@ -946,35 +974,100 @@ public class Dahboard extends javax.swing.JFrame {
     public boolean showTableTJual(String where) {
 //        SELECT `id_tjual`, `id_pengepul`, `id_jenis`, `berat_total`, `total`, `tanggal` FROM `transaksi_jual` WHERE 
 
-        String[] field = {"ID", "Nota", "ID Pengepul", "ID Jenis", "Berat", "Total", "Tanggal"};
+        String[] field = {"ID", "Nota", "Nama Pengepul", "Jenis", "Berat Total", "Total", "Tanggal"};
         DefaultTableModel model = new DefaultTableModel(null, field);
         model.setRowCount(0);
         mTable.setModel(model);
 
-        if (!db.get(null, "transaksi_jual", where, -1)) {
+        String col = "id_tjual, nota, p.nama , jenis , berat_total , total, tanggal";
+        String tbl = " transaksi_jual tj ,sampah s,pengepul p";
+        String wherebase = "tj.id_jenis=s.id_jenis and tj.id_pengepul = p.id_pengepul";
+
+        if (!db.get(col, tbl, wherebase, -1)) {
             msg = db.getMessage();
             return false;
         }
 
-        ArrayList<TransaksiJual> list = db.parseTJual();
-        TransaksiJual cItem;
+        ResultSet result = db.getResult();
+        try {
+            while (result.next()) {
+                Object[] row = {
+                    result.getString(1),
+                    result.getString(2),
+                    result.getString(3),
+                    result.getString(4),
+                    result.getString(5),
+                    formatCurr(Double.parseDouble(result.getString(6))),
+                    result.getString(7),};
 
-        for (int i = 0; i < list.size(); i++) {
-            cItem = list.get(i);
-            Object[] row = {
-                cItem.getId(),
-                cItem.getNota(),
-                cItem.getIdPengepul(),
-                cItem.getIdJenis(),
-                cItem.getBeratTotal(),
-                formatCurr(cItem.getTotal()),
-                cItem.getTanggal(),};
-
-            model.addRow(row);
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            msg = ex.getMessage();
+            return false;
         }
 
         db.closeConnection();
         return true;
+    }
+
+    public boolean showTableTarikTunai(String where) {
+//SELECT `id_penarikan`, `id_member`, `nominal`, `tgl`
+
+        String[] field = {"ID", "Nama Member", "ID Member", "Nominal", "Tanggal"};
+        DefaultTableModel model = new DefaultTableModel(null, field);
+        model.setRowCount(0);
+        mTable.setModel(model);
+        String col = "id_penarikan, nama, x.id_member, nominal, tgl";
+        String tbl = "tarik_tunai x,member y";
+        String wherebase = " x.id_member = y.id_member";
+        where = wherebase;
+        if (!db.get(col, tbl, where, -1)) {
+            msg = db.getMessage();
+            return false;
+        }
+
+        ResultSet result = db.getResult();
+        try {
+            while (result.next()) {
+                Object[] row = {
+                    result.getString(1),
+                    result.getString(2),
+                    result.getString(3),
+                    formatCurr(Double.parseDouble(result.getString(4))),
+                    result.getString(5),};
+
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            msg = ex.getMessage();
+            return false;
+        }
+
+        db.closeConnection();
+        return true;
+    }
+
+    private void initExitMethod() {
+
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                ////saat system exit
+
+                //TANYA KELUAR
+                String ObjButtons[] = {"Ya", "Tidak"};
+                int PromptResult = JOptionPane.showOptionDialog(null,
+                        "Apakah anda yakin ingin keluar?", "Bank Sampah",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                        ObjButtons, ObjButtons[1]);
+                if (PromptResult == 0) {
+                    System.exit(0);
+                }
+            }
+        });
+
     }
 
 }

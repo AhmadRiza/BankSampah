@@ -5,8 +5,6 @@
  */
 package Model;
 
-import java.sql.Date;
-
 /**
  *
  * @author riza
@@ -77,7 +75,5 @@ public class Transaksi extends QueryAbstract{
     public String getTableName() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
     
 }
