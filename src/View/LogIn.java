@@ -6,6 +6,7 @@
 package View;
 
 import Helper.CRUD;
+import Model.Account;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;

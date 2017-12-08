@@ -10,6 +10,8 @@ import Model.TransaksiBeli;
 import Model.TransaksiJual;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +24,7 @@ public class PembelianForm extends javax.swing.JFrame {
      * Creates new form NewUser
      */
     int idSampah, idMember, beratTotal;
-    
+
     int status;
     CRUD db;
 
@@ -36,32 +38,62 @@ public class PembelianForm extends javax.swing.JFrame {
         setUpCombo();
 
     }
-    
-    private void setNota(TransaksiJual tj){
-       
-        
+
+    private void setNota(TransaksiBeli tj) {
+        String column = "nama,jenis,harga_beli,berat_total, total";
+        String table = "transaksi_beli tb,member m,sampah s";
+        String where = "tb.id_member = m.id_member AND tb.id_jenis=s.id_jenis"
+                + " AND nomor_nota = '" + tj.getNoNota()+ "'";
+        db.get(column, table, where, 1);
+        ResultSet res = db.getResult();
+//        System.out.println(db.getQuery());
+        try {
+            if (res.next()) {
+                String s = "NOTA";
+                s += "\n=============================";
+                s += "\n No. Nota\t:" + tj.getNoNota();
+                s += "\n Nama\t:"+res.getString(1);
+                s += "\n Jenis\t:"+res.getString(2);
+                s += "\n Harga/Kg\t:"+formatCurr(res.getDouble(3));
+                s += "\n Berat total\t:"+res.getString(4)+" Kg";
+                s += "\n ------------------------------------------------";
+                
+                s += "\n Total\t:"+formatCurr(res.getDouble(5));
+                s += "\n\n\n\nBarang yang sudah di jual tidak bisa di tarik lagi";
+                txtNota.setText(s);
+            }
+        } catch (SQLException ex) {
+            System.out.println(db.getMessage());
+        }
+
     }
     
-    
+    private String formatCurr(double d) {
+        if (d >= 0) {
+            return String.format("Rp, %,.0f", d).replace(",", ".") + ",-";
+        } else {
+            return String.format("- Rp. %,.0f", d * -1).replace(",", ".") + ",-";
+        }
+    }
     
     private String formValidation() {
-        if (comboMember.getSelectedIndex()<1) {
+        if (comboMember.getSelectedIndex() < 1) {
             return "Pilih Member!";
         }
-        if (comboSampah.getSelectedIndex()<1) {
+        if (comboSampah.getSelectedIndex() < 1) {
             return "Pilih jenis sampah!";
         }
-        
+
         if (txtBerat.getText().equals("")) {
             return "Masukkan berat";
         }
         beratTotal = Integer.parseInt(txtBerat.getText());
-        
+
         String[] meber = comboMember.getSelectedItem().toString().split("-");
-        idMember=Integer.parseInt(meber[0].trim());
+        idMember = Integer.parseInt(meber[0].trim());
         String[] sampah = comboSampah.getSelectedItem().toString().split("-");
-        idSampah=Integer.parseInt(sampah[0].trim());
-        
+        idSampah = Integer.parseInt(sampah[0].trim());
+
         return null;
     }
 
@@ -84,15 +116,14 @@ public class PembelianForm extends javax.swing.JFrame {
                 String item = res1.getString(1) + " - " + res1.getString(2);
                 comboMember.addItem(item);
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("error" + db.getMessage() + ex.getMessage());
         } finally {
             db.closeConnection();
         }
-        
+
         //sampah
-        
         col = "id_jenis, jenis";
         table = "sampah";
 
@@ -110,13 +141,13 @@ public class PembelianForm extends javax.swing.JFrame {
                 String item = res.getString(1) + " - " + res.getString(2);
                 comboSampah.addItem(item);
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("error" + db.getMessage() + ex.getMessage());
         } finally {
             db.closeConnection();
         }
-        
+
     }
 
     private void reset() {
@@ -144,6 +175,8 @@ public class PembelianForm extends javax.swing.JFrame {
         comboSampah = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         txtBerat = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtNota = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -194,7 +227,7 @@ public class PembelianForm extends javax.swing.JFrame {
                 .addComponent(labelForm)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
@@ -215,6 +248,10 @@ public class PembelianForm extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(62, 62, 62));
         jLabel4.setText("Berat Total (Kg)");
 
+        txtNota.setColumns(20);
+        txtNota.setRows(5);
+        jScrollPane1.setViewportView(txtNota);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -229,25 +266,31 @@ public class PembelianForm extends javax.swing.JFrame {
                     .addComponent(comboSampah, 0, 226, Short.MAX_VALUE)
                     .addComponent(jLabel4)
                     .addComponent(txtBerat))
-                .addGap(0, 46, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboMember, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboSampah, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBerat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboMember, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboSampah, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBerat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 129, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         pack();
@@ -258,15 +301,16 @@ public class PembelianForm extends javax.swing.JFrame {
 
         String validMsg = formValidation();
         if (validMsg == null) {
-            TransaksiBeli tj = new TransaksiBeli(idMember, null, -1, idSampah, beratTotal, -1, null);
-            if (!db.insert(tj)) {
+            TransaksiBeli tb = new TransaksiBeli(idMember, null, -1, idSampah, beratTotal, -1, null);
+            if (!db.insert(tb)) {
                 JOptionPane.showMessageDialog(null, db.getMessage());
             }
             db.closeConnection();
+            setNota(tb);
             Main.newForm.showTableTbeli(null);//update Table
             reset();
             JOptionPane.showMessageDialog(null, "Transaksi Berhasil!");
-            
+
         } else {
             JOptionPane.showMessageDialog(null, validMsg);
         }
@@ -303,7 +347,7 @@ public class PembelianForm extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-       
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -321,9 +365,11 @@ public class PembelianForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelForm;
     private javax.swing.JTextField txtBerat;
+    private javax.swing.JTextArea txtNota;
     // End of variables declaration//GEN-END:variables
 
 }

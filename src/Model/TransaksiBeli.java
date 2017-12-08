@@ -7,16 +7,20 @@ package Model;
 
 import java.text.SimpleDateFormat;
 
-
 public final class TransaksiBeli extends Transaksi {
-    
+
     private int idMember;
     private String noNota;
-    
+
     public TransaksiBeli(int idMember, String noNota, int id, int idJenis, int beratTotal, double total, String tanggal) {
         super(id, idJenis, beratTotal, total, tanggal);
+        if (noNota == null) {
+            String nota = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()).replace(".", "");
+            this.noNota = nota;
+        }else{
+            this.noNota = noNota;
+        }
         this.idMember = idMember;
-        this.noNota = noNota;
     }
 
     @Override
@@ -26,19 +30,17 @@ public final class TransaksiBeli extends Transaksi {
 
     @Override
     public String getWhereKey() {
-        return "id_tbeli = "+id;
+        return "id_tbeli = " + id;
     }
 
     @Override
     public String toInsert() {
-        
-        String nota = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()).replace(".", "");
-        setNoNota(noNota);
+
 //        `id_tbeli`, `id_jenis`, `berat_total`, `nomor_nota`, `id_member`, `total`, `tanggal`
-        String s = "default, "+idJenis+", "+beratTotal+", '"+nota+"', "+idMember+", default , default ";
+        String s = "default, " + idJenis + ", " + beratTotal + ", '" + noNota + "', " + idMember + ", default , default ";
         return s;
     }
-    
+
     public int getIdMember() {
         return idMember;
     }
@@ -57,15 +59,15 @@ public final class TransaksiBeli extends Transaksi {
 
     @Override
     public String toString() {
-        String s = 
-                getId()+"->"+
-                getNoNota()+"->"+
-                getIdJenis()+"->"+
-                getIdMember()+"->"+
-                getTanggal()+"->"+
-                getBeratTotal()+"->"+
-                getTotal();
+        String s
+                = getId() + "->"
+                + getNoNota() + "->"
+                + getIdJenis() + "->"
+                + getIdMember() + "->"
+                + getTanggal() + "->"
+                + getBeratTotal() + "->"
+                + getTotal();
         return s;
     }
-    
+
 }

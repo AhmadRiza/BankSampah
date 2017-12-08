@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package View;
 
 import Helper.CRUD;
@@ -35,18 +36,45 @@ public class PenjualanForm extends javax.swing.JFrame {
         setUpCombo();
 
     }
+  
     
-    private void setNota(TransaksiJual tj){
-        
-        
-        System.out.println("=========================");   
-        System.out.println("\t\tNOTA");   
-        System.out.println("=========================");   
-        
-        
+    private void setNota(TransaksiJual tj) {
+        String column = "nama,jenis,harga_jual,berat_total, total";
+        String table = "transaksi_jual tj,pengepul p,sampah s";
+        String where = "tj.id_pengepul = p.id_pengepul AND tj.id_jenis=s.id_jenis"
+                + " AND nota = '" + tj.getNota()+ "'";
+        db.get(column, table, where, 1);
+        ResultSet res = db.getResult();
+//        System.out.println(db.getQuery());
+
+        try {
+            if (res.next()) {
+                String s = "NOTA";
+                s += "\n=============================";
+                s += "\n No. Nota\t:" + tj.getNota();
+                s += "\n Nama\t:"+res.getString(1);
+                s += "\n Jenis\t:"+res.getString(2);
+                s += "\n Harga/Kg\t:"+formatCurr(res.getDouble(3));
+                s += "\n Berat total\t:"+res.getString(4)+" Kg";
+                s += "\n ------------------------------------------------";
+                
+                s += "\n Total\t:"+formatCurr(res.getDouble(5));
+                s += "\n\n\n\nBarang yang sudah di beli tidak bisa di tarik lagi";
+                txtNota.setText(s);
+            }
+        } catch (SQLException ex) {
+            System.out.println(db.getMessage());
+        }
+
     }
     
-    
+    private String formatCurr(double d) {
+        if (d >= 0) {
+            return String.format("Rp, %,.0f", d).replace(",", ".") + ",-";
+        } else {
+            return String.format("- Rp. %,.0f", d * -1).replace(",", ".") + ",-";
+        }
+    }
     
     private String formValidation() {
         if (comboPengepul.getSelectedIndex()<1) {
@@ -150,6 +178,8 @@ public class PenjualanForm extends javax.swing.JFrame {
         comboSampah = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         txtBerat = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtNota = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -221,6 +251,10 @@ public class PenjualanForm extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(62, 62, 62));
         jLabel4.setText("Berat Total (Kg)");
 
+        txtNota.setColumns(20);
+        txtNota.setRows(5);
+        jScrollPane1.setViewportView(txtNota);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,25 +269,31 @@ public class PenjualanForm extends javax.swing.JFrame {
                     .addComponent(comboSampah, 0, 226, Short.MAX_VALUE)
                     .addComponent(jLabel4)
                     .addComponent(txtBerat))
-                .addGap(0, 40, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboPengepul, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboSampah, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBerat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboPengepul, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboSampah, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBerat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -325,9 +365,11 @@ public class PenjualanForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelForm;
     private javax.swing.JTextField txtBerat;
+    private javax.swing.JTextArea txtNota;
     // End of variables declaration//GEN-END:variables
 
 }
