@@ -22,8 +22,7 @@ public class SampahForm extends javax.swing.JFrame {
     String jenis;
     double hJual;
     double hBeli;
-    int stok;
-    
+  
     int status;
     CRUD db;
     public final int INSERT = 1;
@@ -42,7 +41,6 @@ public class SampahForm extends javax.swing.JFrame {
             txtJenis.setText(s.getJenis());
             txtHJual.setText(s.getHargaJual()+"");
             txtHBeli.setText(s.getHargaBeli()+"");
-            txtStok.setText(s.getStok()+"");
             labelForm.setText("Edit Sampah");
             btnOK.setText("Update");
         } else {
@@ -57,7 +55,7 @@ public class SampahForm extends javax.swing.JFrame {
         try {
             hJual = Double.parseDouble(txtHJual.getText());
             hBeli = Double.parseDouble(txtHBeli.getText());
-            stok = Integer.parseInt(txtStok.getText());
+           
         } catch (Exception e) {
             return "Isi form dengan lengkap!";
         }
@@ -73,7 +71,6 @@ public class SampahForm extends javax.swing.JFrame {
         txtJenis.setText("");
         txtHJual.setText("");
         txtHBeli.setText("");
-        txtStok.setText("");
     }
 
     /**
@@ -94,8 +91,6 @@ public class SampahForm extends javax.swing.JFrame {
         txtJenis = new javax.swing.JTextField();
         txtHJual = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        txtStok = new javax.swing.JTextField();
         txtHBeli = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
 
@@ -148,7 +143,7 @@ public class SampahForm extends javax.swing.JFrame {
                 .addComponent(labelForm)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
@@ -161,10 +156,6 @@ public class SampahForm extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(62, 62, 62));
         jLabel3.setText("Harga Jual / Kg");
 
-        jLabel5.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(62, 62, 62));
-        jLabel5.setText("Stok (Kg)");
-
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(62, 62, 62));
         jLabel7.setText("Harga Beli / Kg");
@@ -176,16 +167,13 @@ public class SampahForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1)
-                        .addComponent(txtJenis)
-                        .addComponent(jLabel3)
-                        .addComponent(txtHJual)
-                        .addComponent(jLabel7)
-                        .addComponent(txtHBeli, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5)
-                    .addComponent(txtStok, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1)
+                    .addComponent(txtJenis)
+                    .addComponent(jLabel3)
+                    .addComponent(txtHJual)
+                    .addComponent(jLabel7)
+                    .addComponent(txtHBeli, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -204,10 +192,6 @@ public class SampahForm extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtHBeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -220,7 +204,7 @@ public class SampahForm extends javax.swing.JFrame {
         if (status == INSERT) {
             String validMsg = formValidation();
             if (validMsg == null) {
-                if (!db.insert(new Sampah(-1, jenis, hJual, hBeli, stok) ) ) {
+                if (!db.insert(new Sampah(-1, jenis, hJual, hBeli, 0) ) ) {
                     JOptionPane.showMessageDialog(null, db.getMessage());
                 }
                 db.closeConnection();
@@ -237,7 +221,6 @@ public class SampahForm extends javax.swing.JFrame {
                 pastSampah.setHargaJual(hJual);
                 pastSampah.setHargaBeli(hBeli);
                 pastSampah.setJenis(jenis);
-                pastSampah.setStok(stok);
                 
                 if (!db.update(pastSampah)) {
                     JOptionPane.showMessageDialog(null, db.getMessage());
@@ -306,7 +289,6 @@ public class SampahForm extends javax.swing.JFrame {
     private javax.swing.JButton btnOK;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
@@ -315,7 +297,6 @@ public class SampahForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtHBeli;
     private javax.swing.JTextField txtHJual;
     private javax.swing.JTextField txtJenis;
-    private javax.swing.JTextField txtStok;
     // End of variables declaration//GEN-END:variables
 
     private String fDouble(double d){

@@ -27,7 +27,10 @@ public class Dahboard extends javax.swing.JFrame {
     /**
      * Creates new form NewForm
      */
-    private final int MEMBER = 11, SAMPAH = 12, PENGEPUL = 13, JUAL = 14, BELI = 15, TARIK_TUNAI = 16, KEUANGAN = 17;
+    private final int MEMBER = 11, SAMPAH = 12,
+            PENGEPUL = 13, JUAL = 14,
+            BELI = 15, TARIK_TUNAI = 16,
+            KEUANGAN = 17, LAPORAN = 18;
 
     CRUD db;
     int statusUI;
@@ -40,6 +43,7 @@ public class Dahboard extends javax.swing.JFrame {
         }
         if (Session.isLogIn()) {
             initComponents();
+            txtUserName.setText("Hi, "+Session.userName);
             db = new CRUD();
             showTableMember(null);
             setUIState(MEMBER);
@@ -62,7 +66,7 @@ public class Dahboard extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        txtUserName = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         labelJual = new javax.swing.JLabel();
         indJual = new javax.swing.JLabel();
@@ -79,6 +83,8 @@ public class Dahboard extends javax.swing.JFrame {
         labelAdmin = new javax.swing.JLabel();
         indAdmin = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        labelLapor = new javax.swing.JLabel();
+        indLapor = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         btnNew = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
@@ -98,9 +104,9 @@ public class Dahboard extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/round-account-button-with-user-inside (3).png"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Hi, Riza");
+        txtUserName.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
+        txtUserName.setForeground(new java.awt.Color(255, 255, 255));
+        txtUserName.setText("Hi, Riza");
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -216,6 +222,21 @@ public class Dahboard extends javax.swing.JFrame {
         indAdmin.setBackground(new java.awt.Color(255, 255, 255));
         indAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/arrow.png"))); // NOI18N
 
+        labelLapor.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
+        labelLapor.setForeground(new java.awt.Color(255, 255, 255));
+        labelLapor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/bitcoin-presentation-with-reporter (1).png"))); // NOI18N
+        labelLapor.setText("   Laporan");
+        labelLapor.setToolTipText("");
+        labelLapor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelLapor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelLaporMouseClicked(evt);
+            }
+        });
+
+        indLapor.setBackground(new java.awt.Color(255, 255, 255));
+        indLapor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/arrow.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -233,27 +254,33 @@ public class Dahboard extends javax.swing.JFrame {
                         .addGap(70, 70, 70)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(txtUserName))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelTunai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelGudang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelPengepul, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelMember, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelBeli, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelJual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(indJual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indBeli, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indMember, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indPengepul, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indGudang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indTarik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indAdmin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelTunai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelGudang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelPengepul, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelMember, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelBeli, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelJual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(indJual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(indBeli, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(indMember, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(indPengepul, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(indGudang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(indTarik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(indAdmin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelLapor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(indLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
@@ -262,7 +289,7 @@ public class Dahboard extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(txtUserName)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
@@ -293,7 +320,11 @@ public class Dahboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(indAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(indLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -659,6 +690,18 @@ public class Dahboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_labelTunaiMouseClicked
 
+    private void labelLaporMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelLaporMouseClicked
+        // TODO add your handling code here:
+        int curState = statusUI;
+        setUIState(LAPORAN);
+        Laporan lap = new Laporan();
+        lap.setAlwaysOnTop(true);
+        lap.setVisible(true);
+        DefaultTableModel mod = (DefaultTableModel) mTable.getModel();
+        mod.setRowCount(0);
+        
+    }//GEN-LAST:event_labelLaporMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -704,11 +747,11 @@ public class Dahboard extends javax.swing.JFrame {
     private javax.swing.JLabel indBeli;
     private javax.swing.JLabel indGudang;
     private javax.swing.JLabel indJual;
+    private javax.swing.JLabel indLapor;
     private javax.swing.JLabel indMember;
     private javax.swing.JLabel indPengepul;
     private javax.swing.JLabel indTarik;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
@@ -719,12 +762,14 @@ public class Dahboard extends javax.swing.JFrame {
     private javax.swing.JLabel labelBeli;
     private javax.swing.JLabel labelGudang;
     private javax.swing.JLabel labelJual;
+    private javax.swing.JLabel labelLapor;
     private javax.swing.JLabel labelMember;
     private javax.swing.JLabel labelPengepul;
     private javax.swing.JLabel labelTable;
     private javax.swing.JLabel labelTunai;
     private javax.swing.JTable mTable;
     private javax.swing.JTextField txtCari;
+    private javax.swing.JLabel txtUserName;
     // End of variables declaration//GEN-END:variables
 
     private void throwMessage() {
@@ -754,7 +799,9 @@ public class Dahboard extends javax.swing.JFrame {
         indAdmin.setVisible(false);
         indGudang.setVisible(false);
         indTarik.setVisible(false);
+        indLapor.setVisible(false);
 
+        btnNew.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         statusUI = state;
@@ -795,6 +842,12 @@ public class Dahboard extends javax.swing.JFrame {
                 btnEdit.setEnabled(false);
                 btnDelete.setEnabled(false);
                 break;
+            case LAPORAN:
+                indLapor.setVisible(true);
+                btnEdit.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnNew.setEnabled(false);
+                
 
             default:
         }
@@ -931,7 +984,6 @@ public class Dahboard extends javax.swing.JFrame {
         return true;
     }
 
-   
     public boolean showTableTbeli(String where) {
 //         SELECT `id_tbeli`, `id_jenis`, `berat_total`, `nomor_nota`, `id_member`, `total`, `tanggal`
 

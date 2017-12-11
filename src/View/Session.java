@@ -14,6 +14,8 @@ public class Session {
     
    private static boolean login = false; 
    
+   public static String userName;
+   
    public static boolean isLogIn(){
        return login;
    }

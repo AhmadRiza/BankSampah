@@ -3,19 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/TransaksiJual.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/View/Main.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/Member.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Controller/Main.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/TransaksiBeli.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/Pengepul.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Controller/CRUD.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/Transaksi.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/DBObject.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/View/NewMember.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/Administrasi.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/Model/Sampah.java</file>
-            <file>file:/home/riza/NetBeansProjects/BankSampah/src/View/NewForm.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/PenjualanForm.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/Model/TransaksiBeli.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/Helper/CRUD.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/Dahboard.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/PembelianForm.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/SampahForm.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/Model/TransaksiJual.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/TarikTunai.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/Laporan.java</file>
+            <file>file:/data/repo/BankSampah/BankSampah/src/View/Main.java</file>
         </group>
     </open-files>
 </project-private>

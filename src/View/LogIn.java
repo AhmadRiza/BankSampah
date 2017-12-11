@@ -188,7 +188,9 @@ public class LogIn extends javax.swing.JFrame {
             System.out.println("cek");
             ResultSet rs = db.getResult();
             if (rs.next()) {
+                
                 Session.login();
+                Session.userName = uName;
                 Main.newForm = new Dahboard();
                 Main.newForm.setVisible(true);
                 dispose();

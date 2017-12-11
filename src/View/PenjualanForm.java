@@ -10,6 +10,8 @@ import Helper.CRUD;
 import Model.TransaksiJual;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,7 +23,7 @@ public class PenjualanForm extends javax.swing.JFrame {
     /**
      * Creates new form NewUser
      */
-    int idSampah, idPengepul, beratTotal;
+    int idSampah, idPengepul, beratTotal, stokTersedia;
     
     int status;
     CRUD db;
@@ -88,6 +90,10 @@ public class PenjualanForm extends javax.swing.JFrame {
             return "Masukkan berat";
         }
         beratTotal = Integer.parseInt(txtBerat.getText());
+        
+        if (beratTotal > stokTersedia) {
+            return "Stok tidak cukup";
+        }
         
         String[] pengepul = comboPengepul.getSelectedItem().toString().split("-");
         idPengepul=Integer.parseInt(pengepul[0].trim());
@@ -156,6 +162,7 @@ public class PenjualanForm extends javax.swing.JFrame {
     private void reset() {
         comboPengepul.setSelectedIndex(0);
         comboSampah.setSelectedIndex(0);
+        txtStok.setText("Stok = ");
     }
 
     /**
@@ -180,6 +187,7 @@ public class PenjualanForm extends javax.swing.JFrame {
         txtBerat = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtNota = new javax.swing.JTextArea();
+        txtStok = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -246,6 +254,11 @@ public class PenjualanForm extends javax.swing.JFrame {
         jLabel2.setText("Jenis Sampah");
 
         comboSampah.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--" }));
+        comboSampah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSampahActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(62, 62, 62));
@@ -254,6 +267,10 @@ public class PenjualanForm extends javax.swing.JFrame {
         txtNota.setColumns(20);
         txtNota.setRows(5);
         jScrollPane1.setViewportView(txtNota);
+
+        txtStok.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
+        txtStok.setForeground(new java.awt.Color(51, 51, 51));
+        txtStok.setText("Stok = ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -268,7 +285,8 @@ public class PenjualanForm extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(comboSampah, 0, 226, Short.MAX_VALUE)
                     .addComponent(jLabel4)
-                    .addComponent(txtBerat))
+                    .addComponent(txtBerat)
+                    .addComponent(txtStok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -292,6 +310,8 @@ public class PenjualanForm extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBerat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(txtStok, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -319,6 +339,26 @@ public class PenjualanForm extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnOKActionPerformed
+
+    private void comboSampahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSampahActionPerformed
+        // TODO add your handling code here:
+        try {
+            String[] sampah = comboSampah.getSelectedItem().toString().split("-");
+            idSampah=Integer.parseInt(sampah[0].trim());
+        } catch (Exception e) {
+        }
+        
+        db.get("stok", "sampah", "id_jenis ="+idSampah, 1);
+        ResultSet res = db.getResult();
+        try {
+            if (res.next()) {
+                stokTersedia = res.getInt(1);
+                txtStok.setText("Stok = "+stokTersedia+" Kg");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PenjualanForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_comboSampahActionPerformed
 
     /**
      * @param args the command line arguments
@@ -370,6 +410,7 @@ public class PenjualanForm extends javax.swing.JFrame {
     private javax.swing.JLabel labelForm;
     private javax.swing.JTextField txtBerat;
     private javax.swing.JTextArea txtNota;
+    private javax.swing.JLabel txtStok;
     // End of variables declaration//GEN-END:variables
 
 }

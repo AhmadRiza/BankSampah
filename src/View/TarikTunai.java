@@ -20,9 +20,10 @@ public class TarikTunai extends javax.swing.JFrame {
      * Creates new form TarikTunai
      */
     CRUD db;
+
+    double nominal,saldo;
+    int idMember;
     
-    double nominal;
-    int idMember;        
     public TarikTunai() {
         if (!Main.restriced) {
             JOptionPane.showMessageDialog(null, "Please run from main class");
@@ -32,27 +33,30 @@ public class TarikTunai extends javax.swing.JFrame {
         db = new CRUD();
         setUpCombo();
     }
-    
+
     private String formValidation() {
 
         if (txtNominal.getText().equals("")) {
             return "Masukan nominal";
         }
         nominal = Double.parseDouble(txtNominal.getText());
-        
-        if (comboMember.getSelectedIndex()<1) {
+        if (nominal>saldo) {
+            return "Saldo tidak mencukupi!";
+        }
+        if (comboMember.getSelectedIndex() < 1) {
             return "Pilih Member!";
         }
         String[] member = comboMember.getSelectedItem().toString().split("-");
-        idMember=Integer.parseInt(member[0].trim());
+        idMember = Integer.parseInt(member[0].trim());
         return null;
     }
 
     private void reset() {
         txtNominal.setText("");
         comboMember.setSelectedIndex(0);
+        txtSaldo.setText("Saldo = ");
     }
-    
+
     private void setUpCombo() {
 
         String col = "id_member, nama";
@@ -72,14 +76,21 @@ public class TarikTunai extends javax.swing.JFrame {
                 String item = res1.getString(1) + " - " + res1.getString(2);
                 comboMember.addItem(item);
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("error" + db.getMessage() + ex.getMessage());
         } finally {
             db.closeConnection();
         }
     }
-
+    
+    private String formatCurr(double d) {
+        if (d >= 0) {
+            return String.format("Rp, %,.0f", d).replace(",", ".") + ",-";
+        } else {
+            return String.format("- Rp. %,.0f", d * -1).replace(",", ".") + ",-";
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -98,8 +109,10 @@ public class TarikTunai extends javax.swing.JFrame {
         comboMember = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         txtNominal = new javax.swing.JTextField();
+        txtSaldo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 96, 100));
         jPanel1.setForeground(new java.awt.Color(0, 96, 100));
@@ -157,10 +170,19 @@ public class TarikTunai extends javax.swing.JFrame {
         jLabel1.setText("Member");
 
         comboMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--pilih--" }));
+        comboMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboMemberActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(62, 62, 62));
         jLabel2.setText("Nominal (Rp.)");
+
+        txtSaldo.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
+        txtSaldo.setForeground(new java.awt.Color(51, 51, 51));
+        txtSaldo.setText("Saldo = ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,14 +194,16 @@ public class TarikTunai extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(200, 200, 200))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNominal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboMember, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtNominal, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(comboMember, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -194,6 +218,8 @@ public class TarikTunai extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNominal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -217,6 +243,24 @@ public class TarikTunai extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnOKActionPerformed
+
+    private void comboMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMemberActionPerformed
+        // TODO add your handling code here:
+        try {
+            String[] member = comboMember.getSelectedItem().toString().split("-");
+            idMember = Integer.parseInt(member[0].trim());
+            
+            db.get("saldo", "member", "id_member = "+idMember, 1);
+            ResultSet res = db.getResult();
+            if (res.next()) {
+                saldo = res.getDouble(1);
+                txtSaldo.setText("Saldo = "+formatCurr(saldo));
+            }
+
+        } catch (Exception e) {
+        }
+
+    }//GEN-LAST:event_comboMemberActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,5 +307,6 @@ public class TarikTunai extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelForm;
     private javax.swing.JTextField txtNominal;
+    private javax.swing.JLabel txtSaldo;
     // End of variables declaration//GEN-END:variables
 }
